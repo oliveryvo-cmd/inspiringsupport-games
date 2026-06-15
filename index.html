@@ -66,6 +66,10 @@ footer{padding:30px 20px;text-align:center;border-top:1px solid #ff000022;font-s
 
 <nav>
   <div class="nav-logo">ISG</div>
+  <div id="follower-chip" style="font-size:0.6rem;letter-spacing:3px;color:#ff8888;display:flex;align-items:center;gap:8px;">
+    <span>❤️ <span id="follower-count">0</span> FOLLOWERS</span>
+    <button id="follow-btn" onclick="toggleFollow()" style="padding:4px 14px;background:var(--red);border:1px solid var(--bright);color:#fff;font-family:'Courier New',monospace;font-size:0.55rem;letter-spacing:3px;cursor:pointer;border-radius:3px;">FOLLOW</button>
+  </div>
   <div class="nav-links">
     <a href="#about">ABOUT</a>
     <a href="#games">GAMES</a>
@@ -157,6 +161,33 @@ for(let i = 0; i < 30; i++){
   p.style.width = p.style.height = (1+Math.random()*3)+'px';
   container.appendChild(p);
 }
+
+// Follower count
+function toggleFollow(){
+  const followed=localStorage.getItem('isg-followed');
+  let count=parseInt(localStorage.getItem('isg-followers')||'0');
+  if(followed){
+    count=Math.max(0,count-1);
+    localStorage.removeItem('isg-followed');
+    document.getElementById('follow-btn').textContent='FOLLOW';
+    document.getElementById('follow-btn').style.background='var(--red)';
+  } else {
+    count++;
+    localStorage.setItem('isg-followed','1');
+    document.getElementById('follow-btn').textContent='✅ FOLLOWING';
+    document.getElementById('follow-btn').style.background='#440000';
+  }
+  localStorage.setItem('isg-followers',count);
+  document.getElementById('follower-count').textContent=count;
+}
+(function(){
+  const count=localStorage.getItem('isg-followers')||'0';
+  document.getElementById('follower-count').textContent=count;
+  if(localStorage.getItem('isg-followed')){
+    document.getElementById('follow-btn').textContent='✅ FOLLOWING';
+    document.getElementById('follow-btn').style.background='#440000';
+  }
+})();
 
 // Ideas box
 function submitIdea(){
