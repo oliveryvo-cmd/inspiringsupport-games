@@ -69,6 +69,7 @@ footer{padding:30px 20px;text-align:center;border-top:1px solid #ff000022;font-s
   <div class="nav-links">
     <a href="#about">ABOUT</a>
     <a href="#games">GAMES</a>
+    <a href="#ideas">IDEAS</a>
     <a href="#contact">CONTACT</a>
   </div>
 </nav>
@@ -113,6 +114,19 @@ footer{padding:30px 20px;text-align:center;border-top:1px solid #ff000022;font-s
   </div>
 </section>
 
+<section id="ideas" style="padding:100px 20px;border-top:1px solid #ff000022;text-align:center;">
+  <h2 class="section-title">IDEAS BOX</h2>
+  <div class="section-line"></div>
+  <p style="font-size:0.75rem;letter-spacing:3px;color:#ff8888;margin-bottom:32px;line-height:2;">Got an idea for a game? Submit it here!<br>We read every single one.</p>
+  <div style="max-width:500px;margin:0 auto;">
+    <input id="idea-name" type="text" maxlength="30" placeholder="YOUR NAME (OPTIONAL)" style="width:100%;background:#110000;border:1px solid #ff000044;color:#fff;font-family:'Courier New',monospace;font-size:0.7rem;letter-spacing:3px;padding:12px 16px;margin-bottom:12px;outline:none;border-radius:3px;">
+    <textarea id="idea-text" maxlength="300" placeholder="DESCRIBE YOUR GAME IDEA..." rows="4" style="width:100%;background:#110000;border:1px solid #ff000044;color:#fff;font-family:'Courier New',monospace;font-size:0.7rem;letter-spacing:2px;padding:12px 16px;margin-bottom:12px;outline:none;resize:vertical;border-radius:3px;"></textarea>
+    <button onclick="submitIdea()" style="padding:12px 40px;background:var(--red);border:2px solid var(--bright);color:#fff;font-family:'Courier New',monospace;font-size:0.75rem;font-weight:900;letter-spacing:5px;cursor:pointer;border-radius:3px;transition:all 0.2s;" onmouseover="this.style.background='var(--bright)'" onmouseout="this.style.background='var(--red)'">SUBMIT IDEA</button>
+    <div id="idea-status" style="margin-top:12px;font-size:0.65rem;letter-spacing:3px;color:#ff8888;min-height:20px;"></div>
+  </div>
+  <div id="ideas-list" style="max-width:600px;margin:40px auto 0;display:flex;flex-direction:column;gap:12px;"></div>
+</section>
+
 <section id="contact">
   <h2 class="section-title">CONTACT</h2>
   <div class="section-line"></div>
@@ -142,6 +156,34 @@ for(let i = 0; i < 30; i++){
   p.style.width = p.style.height = (1+Math.random()*3)+'px';
   container.appendChild(p);
 }
+
+// Ideas box
+function submitIdea(){
+  const name=(document.getElementById('idea-name').value.trim()||'ANONYMOUS').toUpperCase();
+  const text=document.getElementById('idea-text').value.trim();
+  const status=document.getElementById('idea-status');
+  if(!text){status.textContent='PLEASE WRITE AN IDEA FIRST!';return;}
+  const ideas=JSON.parse(localStorage.getItem('isg-ideas')||'[]');
+  ideas.unshift({name,text,date:new Date().toLocaleDateString()});
+  localStorage.setItem('isg-ideas',JSON.stringify(ideas));
+  document.getElementById('idea-name').value='';
+  document.getElementById('idea-text').value='';
+  status.style.color='#ff4444';
+  status.textContent='✅ IDEA SUBMITTED! THANK YOU!';
+  setTimeout(()=>status.textContent='',3000);
+  renderIdeas();
+}
+function renderIdeas(){
+  const ideas=JSON.parse(localStorage.getItem('isg-ideas')||'[]');
+  const list=document.getElementById('ideas-list');
+  if(!ideas.length){list.innerHTML='';return;}
+  list.innerHTML='<div style="font-size:0.6rem;letter-spacing:4px;color:#441111;margin-bottom:8px;">SUBMITTED IDEAS</div>'+
+    ideas.map(i=>`<div style="background:#110000;border:1px solid #ff000033;border-radius:4px;padding:14px 18px;text-align:left;">
+      <div style="font-size:0.6rem;letter-spacing:3px;color:var(--bright);margin-bottom:6px;">${i.name} · ${i.date}</div>
+      <div style="font-size:0.7rem;letter-spacing:2px;color:#ffaaaa;line-height:1.8;">${i.text}</div>
+    </div>`).join('');
+}
+renderIdeas();
 
 // Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
