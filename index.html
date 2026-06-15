@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>InspiringSupport Games</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--red:#e01010;--dark-red:#8b0000;--bright:#ff3333;--bg:#0a0000;--card:#110000;}
+body{background:var(--bg);color:#fff;font-family:'Courier New',monospace;overflow-x:hidden;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 40px;background:rgba(10,0,0,0.92);border-bottom:1px solid #ff000022;}
+.nav-logo{font-size:1rem;font-weight:900;letter-spacing:4px;color:var(--bright);text-shadow:0 0 20px var(--red);}
+.nav-links{display:flex;gap:32px;}
+.nav-links a{color:#ff8888;font-size:0.65rem;letter-spacing:3px;text-decoration:none;transition:color 0.2s;}
+.nav-links a:hover{color:#fff;text-shadow:0 0 10px var(--bright);}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 20px 40px;position:relative;overflow:hidden;}
+.hero-laser{position:absolute;top:50%;left:-100%;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--bright),transparent);animation:laserSweep 4s ease-in-out infinite;}
+@keyframes laserSweep{0%{left:-100%;opacity:0;}20%{opacity:1;}80%{opacity:1;}100%{left:100%;opacity:0;}}
+.hero-title{font-size:clamp(2rem,8vw,5rem);font-weight:900;letter-spacing:8px;color:#fff;text-shadow:0 0 40px var(--red),0 0 80px var(--dark-red);line-height:1.1;margin-bottom:12px;}
+.hero-title span{color:var(--bright);}
+.hero-tagline{font-size:clamp(0.7rem,2vw,1rem);letter-spacing:5px;color:#ff8888;margin-bottom:40px;max-width:600px;line-height:1.8;}
+.hero-btn{padding:14px 48px;background:var(--red);border:2px solid var(--bright);color:#fff;font-size:0.8rem;font-weight:900;letter-spacing:5px;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;border-radius:3px;}
+.hero-btn:hover{background:var(--bright);box-shadow:0 0 30px var(--red);}
+.hero-particles{position:absolute;inset:0;pointer-events:none;}
+
+/* ABOUT */
+#about{padding:100px 20px;text-align:center;border-top:1px solid #ff000022;}
+.section-title{font-size:clamp(1.2rem,4vw,2rem);font-weight:900;letter-spacing:8px;color:var(--bright);text-shadow:0 0 20px var(--red);margin-bottom:16px;}
+.section-line{width:60px;height:3px;background:var(--bright);margin:0 auto 40px;box-shadow:0 0 12px var(--red);}
+.about-text{max-width:640px;margin:0 auto;font-size:0.85rem;letter-spacing:2px;color:#ffaaaa;line-height:2.2;}
+
+/* GAMES */
+#games{padding:100px 20px;border-top:1px solid #ff000022;}
+#games .section-title{text-align:center;}
+#games .section-line{margin:0 auto 60px;}
+.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;max-width:900px;margin:0 auto;}
+.game-card{background:var(--card);border:1px solid #ff000033;border-radius:6px;padding:32px 24px;transition:all 0.3s;text-align:center;}
+.game-card:hover{border-color:var(--bright);box-shadow:0 0 30px #ff000033;transform:translateY(-4px);}
+.game-icon{font-size:3rem;margin-bottom:16px;}
+.game-name{font-size:1rem;font-weight:900;letter-spacing:5px;color:#fff;margin-bottom:8px;}
+.game-desc{font-size:0.65rem;letter-spacing:2px;color:#ff8888;line-height:1.8;margin-bottom:20px;}
+.game-btn{display:inline-block;padding:8px 24px;background:transparent;border:1px solid var(--bright);color:var(--bright);font-size:0.6rem;letter-spacing:4px;text-decoration:none;border-radius:3px;transition:all 0.2s;font-family:'Courier New',monospace;}
+.game-btn:hover{background:var(--red);border-color:var(--bright);color:#fff;}
+.game-badge{display:inline-block;background:var(--red);color:#fff;font-size:0.5rem;letter-spacing:3px;padding:3px 10px;border-radius:2px;margin-bottom:12px;}
+
+/* CONTACT */
+#contact{padding:100px 20px;border-top:1px solid #ff000022;text-align:center;}
+.contact-text{font-size:0.75rem;letter-spacing:3px;color:#ff8888;margin-bottom:32px;line-height:2;}
+.social-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;}
+.social-btn{padding:10px 28px;border:1px solid #ff000066;color:#ff8888;font-size:0.65rem;letter-spacing:3px;text-decoration:none;border-radius:3px;transition:all 0.2s;font-family:'Courier New',monospace;}
+.social-btn:hover{border-color:var(--bright);color:#fff;box-shadow:0 0 16px var(--red);}
+
+/* FOOTER */
+footer{padding:30px 20px;text-align:center;border-top:1px solid #ff000022;font-size:0.55rem;letter-spacing:3px;color:#441111;}
+
+/* PARTICLES */
+.particle{position:absolute;width:2px;height:2px;background:var(--bright);border-radius:50%;animation:float linear infinite;opacity:0;}
+@keyframes float{0%{transform:translateY(100vh);opacity:0;}10%{opacity:1;}90%{opacity:0.5;}100%{transform:translateY(-100px);opacity:0;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">ISG</div>
+  <div class="nav-links">
+    <a href="#about">ABOUT</a>
+    <a href="#games">GAMES</a>
+    <a href="#contact">CONTACT</a>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="hero-laser"></div>
+  <div class="hero-particles" id="particles"></div>
+  <h1 class="hero-title">INSPIRING<br><span>SUPPORT</span><br>GAMES</h1>
+  <p class="hero-tagline">WE ARE IMPORTANT AND SO ARE YOU</p>
+  <a href="#games" class="hero-btn">PLAY NOW</a>
+</section>
+
+<section id="about">
+  <h2 class="section-title">ABOUT US</h2>
+  <div class="section-line"></div>
+  <p class="about-text">
+    InspiringSupport Games is an independent game studio dedicated to building
+    fun, exciting, and accessible games for everyone. We believe that games
+    bring people together — and that every player matters.
+    <br><br>
+    We are important. And so are you.
+  </p>
+</section>
+
+<section id="games">
+  <h2 class="section-title">OUR GAMES</h2>
+  <div class="section-line"></div>
+  <div class="games-grid">
+    <div class="game-card">
+      <div class="game-badge">LIVE NOW</div>
+      <div class="game-icon">🔫</div>
+      <div class="game-name">UPGUNS</div>
+      <div class="game-desc">Online multiplayer FPS. Choose your weapons, earn credits, and dominate the arena. Play free in your browser.</div>
+      <a href="https://oliveryvo-cmd.github.io/povp-game/" target="_blank" class="game-btn">PLAY FREE</a>
+    </div>
+    <div class="game-card">
+      <div class="game-icon">🎮</div>
+      <div class="game-name">COMING SOON</div>
+      <div class="game-desc">More games are in development at InspiringSupport Games. Stay tuned for what's next.</div>
+      <a href="#contact" class="game-btn">FOLLOW US</a>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <h2 class="section-title">CONTACT</h2>
+  <div class="section-line"></div>
+  <p class="contact-text">
+    Want to get in touch? Follow us or send us a message.<br>
+    We'd love to hear from you.
+  </p>
+  <div class="social-links">
+    <a href="https://github.com/oliveryvo-cmd" target="_blank" class="social-btn">GITHUB</a>
+    <a href="mailto:truongnvo@gmail.com" class="social-btn">EMAIL</a>
+  </div>
+</section>
+
+<footer>
+  &copy; 2026 INSPIRINGSUPPORT GAMES — ALL RIGHTS RESERVED
+</footer>
+
+<script>
+// Floating particles
+const container = document.getElementById('particles');
+for(let i = 0; i < 30; i++){
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.left = Math.random()*100+'%';
+  p.style.animationDuration = (4+Math.random()*8)+'s';
+  p.style.animationDelay = (Math.random()*8)+'s';
+  p.style.width = p.style.height = (1+Math.random()*3)+'px';
+  container.appendChild(p);
+}
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    e.preventDefault();
+    document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>
