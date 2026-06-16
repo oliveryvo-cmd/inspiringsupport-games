@@ -101,6 +101,8 @@ footer{padding:30px 20px;text-align:center;border-top:1px solid #ff000022;font-s
     <a href="#about">ABOUT</a>
     <a href="#games">GAMES</a>
     <a href="#news">NEWS</a>
+    <a href="#trailer">TRAILER</a>
+    <a href="#team">TEAM</a>
     <a href="#ideas">IDEAS</a>
     <a href="#contact">CONTACT</a>
   </div>
@@ -459,6 +461,37 @@ footer{padding:30px 20px;text-align:center;border-top:1px solid #ff000022;font-s
   <div id="ideas-list" style="max-width:600px;margin:40px auto 0;display:flex;flex-direction:column;gap:12px;"></div>
 </section>
 
+<!-- TRAILER -->
+<section id="trailer" style="padding:100px 20px;border-top:1px solid #ff000022;text-align:center;">
+  <h2 class="section-title">GAME TRAILER</h2>
+  <div class="section-line"></div>
+  <p style="font-size:0.65rem;letter-spacing:3px;color:#ff8888;margin-bottom:40px;">4 GAMES · 1 COMPANY · INFINITE FUN</p>
+  <div style="max-width:720px;margin:0 auto;background:#0d0005;border:1px solid #ff000033;border-radius:8px;overflow:hidden;position:relative;">
+    <canvas id="trailer-canvas" width="720" height="360" style="width:100%;display:block;"></canvas>
+    <div style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-size:0.5rem;letter-spacing:4px;color:#ff000066;">KIDSREBELLION GAMES · 2026</div>
+  </div>
+</section>
+
+<!-- MEET THE TEAM -->
+<section id="team" style="padding:100px 20px;border-top:1px solid #ff000022;text-align:center;">
+  <h2 class="section-title">MEET THE TEAM</h2>
+  <div class="section-line"></div>
+  <div style="display:flex;justify-content:center;gap:32px;flex-wrap:wrap;max-width:800px;margin:0 auto;">
+    <div style="background:#0d0005;border:1px solid #ff000033;border-radius:8px;padding:32px 28px;width:200px;display:flex;flex-direction:column;align-items:center;gap:12px;">
+      <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#ff2200,#880000);display:flex;align-items:center;justify-content:center;font-size:2rem;border:2px solid #ff000066;box-shadow:0 0 20px #ff000044;">👑</div>
+      <div style="font-size:0.9rem;font-weight:900;letter-spacing:4px;color:#ff4444;text-shadow:0 0 12px #ff0000;">OVO</div>
+      <div style="font-size:0.55rem;letter-spacing:3px;color:#ff000088;">CEO &amp; FOUNDER</div>
+      <div style="font-size:0.6rem;letter-spacing:2px;color:#ff8888;line-height:1.8;text-align:center;">Game designer, developer &amp; creative director of KidsRebellion Games.</div>
+    </div>
+    <div style="background:#0d0005;border:1px solid #ff000033;border-radius:8px;padding:32px 28px;width:200px;display:flex;flex-direction:column;align-items:center;gap:12px;">
+      <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#220066,#110033);display:flex;align-items:center;justify-content:center;font-size:2rem;border:2px solid #ff000066;box-shadow:0 0 20px #ff000044;">🤖</div>
+      <div style="font-size:0.9rem;font-weight:900;letter-spacing:4px;color:#ff4444;text-shadow:0 0 12px #ff0000;">CLAUDE</div>
+      <div style="font-size:0.55rem;letter-spacing:3px;color:#ff000088;">AI DEVELOPER</div>
+      <div style="font-size:0.6rem;letter-spacing:2px;color:#ff8888;line-height:1.8;text-align:center;">AI assistant that helps build all the games and the website.</div>
+    </div>
+  </div>
+</section>
+
 <section id="contact">
   <h2 class="section-title">CONTACT</h2>
   <div class="section-line"></div>
@@ -553,6 +586,66 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
     document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'});
   });
 });
+
+// Trailer canvas animation
+(function(){
+  const tc=document.getElementById('trailer-canvas');
+  if(!tc) return;
+  const ctx=tc.getContext('2d');
+  const W=tc.width,H=tc.height;
+  const GAMES=[
+    {name:'UPGUNS',sub:'ONLINE MULTIPLAYER FPS',color:'#00ffcc',bg:'#020a0a'},
+    {name:'DOGFIGHT GALAXY',sub:'3D SPACE SHOOTER',color:'#ff8800',bg:'#020208'},
+    {name:'ALIVEFEAR',sub:'3D SURVIVAL HORROR',color:'#ff2200',bg:'#080100'},
+    {name:'RACEKRG',sub:'3D RACING GAME',color:'#00ffcc',bg:'#020508'},
+  ];
+  let frame=0,gameIdx=0,switchTimer=0;
+  const SWITCH_FRAMES=180;
+  // Stars
+  const stars=Array.from({length:80},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.5+0.3,s:Math.random()*0.5+0.2}));
+  function drawTrailer(){
+    frame++;switchTimer++;
+    if(switchTimer>SWITCH_FRAMES){switchTimer=0;gameIdx=(gameIdx+1)%GAMES.length;}
+    const g=GAMES[gameIdx];
+    const progress=switchTimer/SWITCH_FRAMES;
+    // BG
+    ctx.fillStyle=g.bg;ctx.fillRect(0,0,W,H);
+    // Stars
+    stars.forEach(s=>{s.x-=s.s;if(s.x<0){s.x=W;s.y=Math.random()*H;}ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='#ffffff33';ctx.fill();});
+    // Scan lines
+    for(let y=0;y<H;y+=4){ctx.fillStyle='rgba(0,0,0,0.15)';ctx.fillRect(0,y,W,2);}
+    // Glow orb
+    const grd=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,200);
+    grd.addColorStop(0,g.color+'22');grd.addColorStop(1,'transparent');
+    ctx.fillStyle=grd;ctx.fillRect(0,0,W,H);
+    // KRG logo small
+    ctx.font='900 13px Courier New';ctx.fillStyle='#ff220066';ctx.textAlign='left';ctx.fillText('KIDSREBELLION GAMES',20,28);
+    // Game number
+    ctx.font='900 11px Courier New';ctx.fillStyle=g.color+'66';ctx.textAlign='right';ctx.fillText((gameIdx+1)+'/'+GAMES.length,W-20,28);
+    // Big title
+    const alpha=Math.min(1,Math.min(progress*8,( 1-progress)*8));
+    ctx.globalAlpha=alpha;
+    ctx.font='900 clamp(28px,6vw,52px) Courier New';
+    ctx.textAlign='center';
+    // Shadow
+    ctx.fillStyle='#000000aa';ctx.fillText(g.name,W/2+3,H/2+8);
+    // Main text with glow
+    ctx.shadowColor=g.color;ctx.shadowBlur=30;
+    ctx.fillStyle=g.color;ctx.fillText(g.name,W/2,H/2);
+    ctx.shadowBlur=0;
+    // Sub
+    ctx.font='700 12px Courier New';ctx.letterSpacing='4px';
+    ctx.fillStyle='#ffffff88';ctx.fillText(g.sub,W/2,H/2+34);
+    // Progress dots
+    GAMES.forEach((_,i)=>{
+      ctx.beginPath();ctx.arc(W/2+(i-1.5)*22,H-30,i===gameIdx?5:3,0,Math.PI*2);
+      ctx.fillStyle=i===gameIdx?g.color:'#ffffff33';ctx.fill();
+    });
+    ctx.globalAlpha=1;
+    requestAnimationFrame(drawTrailer);
+  }
+  drawTrailer();
+})();
 </script>
 </body>
 </html>
